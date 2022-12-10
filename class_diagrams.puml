@@ -1,0 +1,96 @@
+@startuml General-Classes
+
+class TerminalServices
+
+class VideoServices
+
+class Color {
+    _r: Red
+    _g: Green
+    _b: Blue
+}
+
+class Point {
+    _x: x position on the screen.
+    _y: y position on the screen.
+}
+
+class Director {
+    _cast: Collection of all actors.
+    _keyboard: Keyboard services.
+    _video: Video services.
+
+    start_game(): Starts the game.
+}
+
+@enduml
+
+
+
+@startuml Actor-Class
+
+class Actor {
+    _text: Displayable text representation.
+    _font_size: Size of this actor.
+    _color: Color of the actor.
+    _position: Current position of actor on the screen.
+    _velocity: How fast the actor is moving.
+
+    move_actor(dx, dy): Move the actor in the specified directions.
+}
+note top: "Base class for items drawn on screen."
+
+class Banner {
+}
+Actor <|-- Banner
+
+class World {
+    _world: Grid of the individual elements.
+    _new_world: Grid of the new world in the generation count.
+    _generation: The current generation count.
+
+  reset_world(): Resets the world grids.
+  generate_new_world(): Generates a new world from the existing world.
+  update_world(): Updates the world from the new world grid.
+}
+Actor <|-- World
+
+class Player {
+  _state: Player state, run, pause, etc.
+}
+note top: Player is used to represent the cursor for setting up the life grid.
+Actor <|-- Player
+
+class Cast {
+    add_actor(group, actor): Adds an actor to the given group.
+    get_actors(group): Gets the actors in the given group.
+    get_all_actors(): Gets all of the actors in the cast.
+    get_first_actor(group): Gets the first actor in the given group.
+    remove_actor(group, actor): Removes an actor from the given group.
+}
+note top: Collection of actors that are drawn on the screen.
+
+@enduml
+
+@startuml Action-Class
+
+class Action {
+    execute_action(): Execute the action.
+}
+note top: Base class for game actions.
+
+Action <|-- ResetWorldAction:  Initialize action.
+Action  <|-- ControlCursorAction: Input action
+Action <|-- MoveCursorAction: Update action
+Action <|-- GenerateNewWorldAction: Update action
+Action <|-- DrawNewWorldAction: Output action
+Action <|-- UpdateWorldAction: Output action
+
+class Script {
+    add_action(group, action)
+    get_action(group)
+    remove_action(group, action)
+}
+note top: Collection of actions the game executes.
+
+@enduml
