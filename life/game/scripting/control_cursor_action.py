@@ -4,11 +4,9 @@ from game.casting.player import Player
 from game.shared.point import Point
 
 
-class ControlActorsAction(Action):
+class ControlCursorAction(Action):
     """
-    An input action that controls the cycle.
-    
-    The responsibility of ControlActorsAction is to get the direction and move the cycle's head.
+    An input action that controls the player's cursor.
 
     Attributes:
         _keyboard_service (KeyboardService): An instance of KeyboardService.
@@ -21,7 +19,6 @@ class ControlActorsAction(Action):
             keyboard_service (KeyboardService): An instance of KeyboardService.
         """
         self._keyboard_service = keyboard_service
-        # self._direction = Point(constants.CELL_SIZE, 0)
 
     def execute(self, cast, script):
         """Executes the control actors action.

@@ -1,11 +1,9 @@
 from game.scripting.action import Action
 
 
-class DrawActorsAction(Action):
+class DrawNewWorldAction(Action):
     """
-    An output action that draws all the actors.
-    
-    The responsibility of DrawActorsAction is to draw all the actors.
+    Draws the new world array.
 
     Attributes:
         _video_service (VideoService): An instance of VideoService.

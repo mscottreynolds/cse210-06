@@ -1,89 +1,53 @@
-import constants
 from game.casting.actor import Actor
 from game.shared.point import Point
 
 
-class Cycle(Actor):
+class World(Actor):
     """
-    A long limbless reptile.
-    
-    The responsibility of Cycle is to move itself.
+    The current world grid and the new world grid. Grids are two dimensional arrays.
 
-    Attributes:
-        _points (int): The number of points the food is worth.
+    _world: Two dimensional array.
+    _new_world: Two dimensional array for calculating new world.
     """
-    def __init__(self, color = constants.WHITE, position = 0, velocity = 0):
-        """
-        color = Color of the body.
-        position = Initial starting position. 
-        velocity = Initial velocity.
-        """
+
+    def __init__(self, rows: int, columns: int):
         super().__init__()
-        self._segments = []
-        self._color = color
-        if velocity != 0:
-            self._velocity = velocity
-            # velocity = Point(0, -constants.CELL_SIZE)
-        if position != 0:
-            self._position = position
-        self._prepare_body()
 
-    def get_segments(self):
-        return self._segments
+        self._generation = 0
+        self._rows = rows
+        self._columns = columns
+        self.reset_world()
 
-    def move_next(self):
-        # move all segments
-        for segment in self._segments:
-            segment.move_next()
 
-        # update velocities
-        for i in range(len(self._segments) - 1, 0, -1):
-            trailing = self._segments[i]
-            previous = self._segments[i - 1]
-            velocity = previous.get_velocity()
-            trailing.set_velocity(velocity)
+    def get_generation(self) -> int:
+        return self._generation
 
-    def get_head(self):
-        return self._segments[0]
+    def get_world(self):
+        return self._world
+    
+    def get_new_world(self):
+        return self._new_world
 
-    def grow_tail(self, number_of_segments):
-        for i in range(number_of_segments):
-            tail = self._segments[-1]
-            velocity = tail.get_velocity()
-            offset = velocity.reverse()
-            position = tail.get_position().add(offset)
-            
-            segment = Actor()
-            segment.set_position(position)
-            segment.set_velocity(velocity)
-            segment.set_text("#")
-            segment.set_color(self._color)
-            self._segments.append(segment)
+    def reset_world(self):
+        """
+        Initialize the world arrays.
+        Includes extra rows and columns for boarders used in wrapping world.
+        """        
 
-    def turn_head(self, velocity):
-        self._segments[0].set_velocity(velocity)
+        self._world =     [ [None] * (self._columns+2) for i in range(self._rows+2) ]
+        self._new_world = [ [None] * (self._columns+2) for i in range(self._rows+2) ]
+        self._generation = 0
 
-    # def get_velocity(self) -> Point:
-    #     return self._segments[0].get_velocity()
-
-    # def set_velocity(self, velocity):
-    #     self._segments[0].set_velocity(velocity)
+    def generate_new_world(self):
+        """
+        Calculates and generates a new world array.
+        """
+        return
 
     
-    def _prepare_body(self):
+    def update_world(self):
+        """
+        Updates the world array from the new world array.
+        """
+        return
 
-        for i in range(constants.CYCLE_LENGTH):
-            text = "@" if i == 0 else "#"
-            # color = constants.YELLOW if i == 0 else self._color
-            position = self._position   # Initial position.
-            velocity = self._velocity   # Initial velocity.
-            # position = Point(x - i * constants.CELL_SIZE, y)
-            # velocity = Point(1 * constants.CELL_SIZE, 0)
-            # velocity = Point(0, 1 * constants.CELL_SIZE)
-            
-            segment = Actor()
-            segment.set_position(position)
-            segment.set_velocity(velocity)
-            segment.set_text(text)
-            segment.set_color(self._color)
-            self._segments.append(segment)

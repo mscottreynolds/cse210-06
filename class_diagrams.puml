@@ -45,6 +45,9 @@ class Banner {
 Actor <|-- Banner
 
 class World {
+    _columns: Number of columns in grids.
+    _rows: Number of rows in grids.
+    
     _world: Grid of the individual elements.
     _new_world: Grid of the new world in the generation count.
     _generation: The current generation count.
