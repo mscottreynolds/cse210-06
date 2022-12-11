@@ -12,6 +12,8 @@ class Player(Actor):
 
     def __init__(self):
         super().__init__()
+        self._row = 0
+        self._col = 0
 
 
     def get_state(self):
@@ -20,4 +22,17 @@ class Player(Actor):
 
     def set_state(self, state):
         self._state = state
+
+    def get_row(self):
+        return self._row
+
+    def get_column(self):
+        return self._col
+
+    def set_row(self, row):
+        self._row = row
+    
+    def set_column(self, col):
+        self._col = col
+    
 

@@ -24,7 +24,24 @@ class InitializeWorldAction(Action):
         player: Player = cast.get_first_actor("player")
         if player.get_state() == constants.STATE_INITIAL:
             # Initialize and then set state to PAUSE.
-            world: World = cast.get_first_actor("player")
+            world: World = cast.get_first_actor("world")
+            message: Actor = cast.get_first_actor("message")
             world.reset_world()
-            player.set_state(constants.STATE_PAUSE) 
+            # player.set_state(constants.STATE_PAUSE)
+            # message.set_text(constants.MSG_PAUSED)
 
+            # Insert a glider as a starting point.
+            grid = world.get_grid()
+            grid[1][1] = 1
+            grid[1][2] = 0
+            grid[1][3] = 0
+            grid[2][1] = 0
+            grid[2][2] = 1
+            grid[2][3] = 1
+            grid[3][1] = 1
+            grid[3][2] = 1
+            grid[3][3] = 0
+
+            # Now set game to running.
+            player.set_state(constants.STATE_RUN)
+            message.set_text(constants.MSG_RUNNING)

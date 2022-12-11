@@ -35,7 +35,7 @@ class DrawWorldAction(Action):
 
         # Clear internal buffer
         self._video_service.clear_buffer()
-
+        
         # Get the player and if not in RUNNING state, draw it.
         player: Player = cast.get_first_actor("player")
         if player.get_state() != constants.STATE_RUN:
@@ -61,7 +61,10 @@ class DrawWorldAction(Action):
         self._video_service.draw_actors(points)
 
         banner: Banner = cast.get_first_actor("banner")
-        self._video_service.draw_actor(banner)
+        self._video_service.draw_actor(banner, True)
+
+        message: Actor = cast.get_first_actor("message")
+        self._video_service.draw_actor(message, True)
 
         # Flush buffer to screen.
         self._video_service.flush_buffer()

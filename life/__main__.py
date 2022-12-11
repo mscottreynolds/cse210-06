@@ -1,6 +1,7 @@
 import constants
 
 from game.casting.cast import Cast
+from game.casting.actor import Actor
 from game.casting.banner import Banner
 from game.casting.world import World
 from game.casting.player import Player
@@ -22,20 +23,31 @@ def main():
     # create the cast
     # Player: Set cursor postiion to middle of the screen.
     player = Player()
-    x = int(constants.MAX_X / 2)
-    y = int(constants.MAX_Y / 2)
-    player.set_position(Point(x, y))
+    row = int(int(constants.ROWS / 2))
+    col = int(int(constants.COLUMNS / 2))
+    player.set_position(Point(col, row).scale(constants.CELL_SIZE))
+    player.set_row(row)
+    player.set_column(col)
     player.set_state(constants.STATE_INITIAL)
+    player.set_text("@")
 
     world = World(constants.ROWS, constants.COLUMNS)
 
     banner = Banner()
     banner.set_text("Life")
+    banner.set_position(Point(col, 0).scale(constants.CELL_SIZE))
+    banner.set_font_size(constants.FONT_SIZE * 2)
+
+    # Instructional messages.
+    message = Actor()
+    message.set_text(constants.MSG_PAUSED)
+    message.set_position(Point(col, constants.ROWS-1).scale(constants.CELL_SIZE))
 
     cast = Cast()
     cast.add_actor("player", player)
     cast.add_actor("world", world)
     cast.add_actor("banner", banner)
+    cast.add_actor("message", message)
    
     # Services
     keyboard_service = KeyboardService()

@@ -13,7 +13,7 @@ class Actor:
         _text (string): The text to display
         _font_size (int): The font size to use.
         _color (Color): The color of the text.
-        _position (Point): The screen coordinates.
+        _position (Point): The screen coordinates, in row, column format.
         _velocity (Point): The speed and direction.
     """
 

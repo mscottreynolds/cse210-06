@@ -1,5 +1,6 @@
 from game.shared.color import Color
 
+VERSION = 1.0
 
 COLUMNS = 80
 ROWS = 60
@@ -24,3 +25,7 @@ RIGHT = "right"
 SPACE = "space"
 ENTER = "enter"
 PAUSE = "p"
+
+# Messages
+MSG_PAUSED = "Press r to run. j, k, l, i to move cursor. s to set cell. x to clear cell."
+MSG_RUNNING = "Press p to pause. Esc to quit."
