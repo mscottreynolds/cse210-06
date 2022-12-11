@@ -27,28 +27,11 @@ class ControlCursorAction(Action):
             cast (Cast): The cast of Actors in the game.
             script (Script): The script of Actions in the game.
         """
-        # Player 1
-        player1 = cast.get_first_actor("player1")
-        cycle1 = player1.get_cycle()
-        direction1 = cycle1.get_head().get_velocity()
+        # Get the player
+        player: Player = cast.get_first_actor("player")
+        direction = Point(0, 0)
 
-        # left
-        if self._keyboard_service.is_key_down('a'):
-            direction1 = Point(-constants.CELL_SIZE, 0)
-        
-        # right
-        if self._keyboard_service.is_key_down('d'):
-            direction1 = Point(constants.CELL_SIZE, 0)
-        
-        # up
-        if self._keyboard_service.is_key_down('w'):
-            direction1 = Point(0, -constants.CELL_SIZE)
-        
-        # down
-        if self._keyboard_service.is_key_down('s'):
-            direction1 = Point(0, constants.CELL_SIZE)
-        
-        cycle1.turn_head(direction1)
+        # Now check the keyboard.
 
         # Player 2
         player2 = cast.get_first_actor("player2")

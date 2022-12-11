@@ -17,3 +17,10 @@ BLUE = Color(0, 0, 255)
 STATE_RUN = 'r'
 STATE_PAUSE = 'p'
 STATE_INITIAL = 'i'
+
+# KEYS
+LEFT = "left"
+RIGHT = "right"
+SPACE = "space"
+ENTER = "enter"
+PAUSE = "p"

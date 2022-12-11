@@ -53,8 +53,6 @@ class World {
     _generation: The current generation count.
 
   reset_world(): Resets the world grids.
-  generate_new_world(): Generates a new world from the existing world.
-  update_world(): Updates the world from the new world grid.
 }
 Actor <|-- World
 
