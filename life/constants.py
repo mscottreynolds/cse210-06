@@ -5,8 +5,8 @@ VERSION = 1.0
 COLUMNS = 80
 ROWS = 60
 CELL_SIZE = 15
-MAX_X = 1200
-MAX_Y = 900
+MAX_X = (COLUMNS+2) * CELL_SIZE
+MAX_Y = (ROWS+2) * CELL_SIZE
 FRAME_RATE = 15
 FONT_SIZE = 15
 CAPTION = "Life"
@@ -18,6 +18,7 @@ BLUE = Color(0, 0, 255)
 STATE_RUN = 'r'
 STATE_PAUSE = 'p'
 STATE_INITIAL = 'i'
+STATE_QUIT = 'q'
 
 # KEYS
 LEFT = "left"
@@ -27,5 +28,5 @@ ENTER = "enter"
 PAUSE = "p"
 
 # Messages
-MSG_PAUSED = "Press r to run. j, k, l, i to move cursor. s to set cell. x to clear cell."
-MSG_RUNNING = "Press p to pause. Esc to quit."
+MSG_PAUSED = "Press Enter to run. arrow keys to move cursor. space to set cell. x to clear cell. q to quit."
+MSG_RUNNING = "Press p to pause."

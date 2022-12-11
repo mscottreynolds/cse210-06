@@ -1,3 +1,6 @@
+import constants
+from game.casting.player import Player
+
 class Director:
     """A person who directs the game. 
     
@@ -30,7 +33,8 @@ class Director:
         self._execute_actions("output", cast, script)
 
         # Now start the loop, doing inputs, updates, and outputs.
-        while self._video_service.is_window_open():
+        player: Player = cast.get_first_actor("player")
+        while self._video_service.is_window_open() and player.get_state() != constants.STATE_QUIT:
             self._execute_actions("input", cast, script)
             self._execute_actions("update", cast, script)
             self._execute_actions("output", cast, script)

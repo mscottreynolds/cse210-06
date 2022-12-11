@@ -27,7 +27,14 @@ class KeyboardService:
 
         self._keys['r'] = pyray.KEY_R
         self._keys['p'] = pyray.KEY_P
+        self._keys['q'] = pyray.KEY_Q
         self._keys['x'] = pyray.KEY_X
+        self._keys['space'] = pyray.KEY_SPACE
+        self._keys['enter'] = pyray.KEY_ENTER
+        self._keys['left'] = pyray.KEY_LEFT
+        self._keys['right'] = pyray.KEY_RIGHT
+        self._keys['up'] = pyray.KEY_UP
+        self._keys['down'] = pyray.KEY_DOWN
 
     def is_key_up(self, key):
         """Checks if the given key is currently up.

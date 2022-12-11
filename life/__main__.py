@@ -41,7 +41,7 @@ def main():
     # Instructional messages.
     message = Actor()
     message.set_text(constants.MSG_PAUSED)
-    message.set_position(Point(col, constants.ROWS-1).scale(constants.CELL_SIZE))
+    message.set_position(Point(col, constants.ROWS+1).scale(constants.CELL_SIZE))
 
     cast = Cast()
     cast.add_actor("player", player)
