@@ -12,7 +12,7 @@ The Game of Life, also known simply as Life, is a cellular automaton devised by 
 The Rules for the Game of Life are defined here [https://en.wikipedia.org/wiki/Conway's_Game_of_Life].
 
 This implementation starts off with a blank screen and a cursor. The player can use the
-'j', 'k', 'l', 'i' keys to move the cursor left, down, right, and up respectively. Pressing 't' will toggle a cell, if it is alive it will be removed; if the cell is blank, it will be populated. When the player is ready for the game to start, they can hit the 'Enter' key. Generations will then proceed, calculating new worlds based on the rules of the Game of Life as oulined above. At any time, the player can pause the game by hitting the 'p' key and then use the cursor control keys to make any additional changes to the current world. The player can resume by hitting the 'Enter' key again.
+arrow keys to move the cursor left, down, right, and up respectively. Pressing the space key will set a cell, pressing the 'x' key will clear a cell. Pressing the 'c' key will clear all cells. When the player is ready for the game to start, they can hit the 'Enter' key. Generations will then proceed, calculating new worlds based on the rules of the Game of Life as oulined above. At any time, the player can pause the game by hitting the 'p' key and then use the cursor control keys to make any additional changes to the current world. The player can resume by hitting the 'Enter' key again.
 
 ## Getting Started
 
@@ -45,17 +45,18 @@ root                    (project root folder)
 
 ## Design
 
-* Game starts up, creates actors and actions. 
-* LIfe and Player classes are added to Cast.
-* Actions are added to Script
-  * ResetWorldAction: initializes all of the variables. This will self remove from Scripts once completed.
-  * ControlCursorAction: Gets the cursor and other input from player.
-  * MoveCursorAction: Moves the cursor and perform other player directed input.
-  * GenerateNewWorld: Scans the world grid and generates new world.
-  * DrawNewWorldAction: Draws the new world to video.
-  * UpdateWorldAction: Updates the world from the previously generated new world.
 * Director is created with video and keyboard services.
-* Director is started with cast and script.
+  * Game starts up, creates actors and actions. 
+  * LIfe and Player classes are added to Cast.
+  * Actions are added to Script
+  * Initialize actions are executed before main loop.
+    * ResetWorldAction: initializes all of the variables. This action is executed before the primary loop is executed.
+    * DrawWorldAction is executed to setup the primary screen.
+  * Main loop is started.
+    * ControlCursorAction: Gets the cursor and other input from player.
+    * MoveCursorAction: Moves the cursor and perform other player directed input.
+    * GenerateNewWorld: Scans the world grid and generates the new world.
+    * DrawWorldAction: Draws the world to video.
 
 
 ## Required Technologies
@@ -76,4 +77,4 @@ Q. How did you apply polymorphism in your program's design?
 A. Polymorphism is used in the Action class and its child classes. The execute_action() method doesn't do anything in the base Action class and must be further defined in each child class. The child class will override the execute_action() method to perform whatever it is the child class is designed to do. For example, a child class could be designed to draw the current state of the game. Another child class can get the users input. And another class can take the users input and update the state and scores of the game.
 
 Q. How did you ensure maintainability in your program's design?  
-A. 
+A. Polymorphism is used at the director level so the director only knows the type of action that needs to be executed, not the specific action itself. Actions listed by type will be called and then execute the actuall code specific to the game. Having actions called by type of function also allows for easier modification to the game later on. Parts of the game compoments are encapsulated in class, a World class that contains the cell grids, and a Player class that contains player specific information and actions. Comments are liberally applied to make sure it is easy to understand logic in later years for maintainability. 

@@ -80,14 +80,23 @@ class ControlCursorAction(Action):
             world: World = cast.get_first_actor("world")
             grid = world.get_grid()
             if self._keyboard_service.is_key_down("s") or \
-               self._keyboard_service.is_key_down("space"):
-                grid[player_row][player_col] = 1
+                self._keyboard_service.is_key_down("space"):
+                if grid[player_row][player_col] == 0:
+                    world.increment_cell_count()
+                    grid[player_row][player_col] = 1
             
             if self._keyboard_service.is_key_down("x"):
-                grid[player_row][player_col] = 0
+                if grid[player_row][player_col] == 1:
+                    world.decrement_cell_count()
+                    grid[player_row][player_col] = 0
 
             if self._keyboard_service.is_key_down("q"):
                 player.set_state(constants.STATE_QUIT)
+
+            if self._keyboard_service.is_key_down("c"):
+                # Clear the grid.
+                if world.get_cell_count() > 0:
+                    world.reset_world()
         else:
             # keys that can be pressed while running
             if self._keyboard_service.is_key_down("p"):

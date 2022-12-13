@@ -29,6 +29,7 @@ class KeyboardService:
         self._keys['p'] = pyray.KEY_P
         self._keys['q'] = pyray.KEY_Q
         self._keys['x'] = pyray.KEY_X
+        self._keys['c'] = pyray.KEY_C
         self._keys['space'] = pyray.KEY_SPACE
         self._keys['enter'] = pyray.KEY_ENTER
         self._keys['left'] = pyray.KEY_LEFT

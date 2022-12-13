@@ -53,7 +53,7 @@ class DrawWorldAction(Action):
             for r in range(1, ROWS+1):
                 if grid[r][c]:
                     actor = Actor()
-                    actor.set_text('#')
+                    actor.set_text('*')
                     point = Point(c, r).scale(constants.CELL_SIZE)
                     actor.set_position(point)
                     points.append(actor)
@@ -61,7 +61,7 @@ class DrawWorldAction(Action):
         self._video_service.draw_actors(points)
 
         banner: Banner = cast.get_first_actor("banner")
-        self._video_service.draw_actor(banner, True)
+        self._video_service.draw_actor(banner, False)
 
         message: Actor = cast.get_first_actor("message")
         self._video_service.draw_actor(message, True)

@@ -41,6 +41,7 @@ class InitializeWorldAction(Action):
             grid[3][1] = 1
             grid[3][2] = 1
             grid[3][3] = 0
+            world.set_cell_count(5)
 
             # Now set game to running.
             player.set_state(constants.STATE_RUN)

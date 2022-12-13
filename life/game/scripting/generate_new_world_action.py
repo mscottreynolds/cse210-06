@@ -76,10 +76,13 @@ class GenerateNewWorldAction(Action):
                 # Rules
                 cell = grid[r][c]
                 if cell == 0 and n == 3:        # Birth
+                    world.increment_cell_count()
                     cell = 1
                 elif cell == 1 and n < 2:       # Lonely
+                    world.decrement_cell_count()
                     cell = 0
                 elif cell == 1 and n > 3:       # Crowded
+                    world.decrement_cell_count()
                     cell = 0
                 next_grid[r][c] = cell
 

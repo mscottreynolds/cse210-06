@@ -48,16 +48,19 @@ class World {
     _columns: Number of columns in grids.
     _rows: Number of rows in grids.
     
-    _world: Grid of the individual elements.
-    _new_world: Grid of the new world in the generation count.
+    _grid: Grid of the individual elements.
+    _next_grid: Grid of the new world in the generation count.
     _generation: The current generation count.
+    _cell_count: Count of the number of cells
 
   reset_world(): Resets the world grids.
 }
 Actor <|-- World
 
 class Player {
-  _state: Player state, run, pause, etc.
+    _column: Column the players cursor is on.
+    _row: Row the players cursor is on.
+    _state: Player state, run, pause, etc.
 }
 note top: Player is used to represent the cursor for setting up the life grid.
 Actor <|-- Player
@@ -80,11 +83,11 @@ class Action {
 }
 note top: Base class for game actions.
 
-Action <|-- ResetWorldAction:  Initialize action.
+Action <|-- InitializeWorldAction:  Initialize action.
 Action  <|-- ControlCursorAction: Input action
 Action <|-- MoveCursorAction: Update action
 Action <|-- GenerateNewWorldAction: Update action
-Action <|-- DrawNewWorldAction: Output action
+Action <|-- DrawWorldAction: Output action
 Action <|-- UpdateWorldAction: Output action
 
 class Script {
