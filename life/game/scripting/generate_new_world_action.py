@@ -13,6 +13,7 @@ class GenerateNewWorldAction(Action):
     """
 
     def __init__(self):
+        """Create action that will generate a new grid from the existing world grid."""
         pass
 
     def execute(self, cast, script):

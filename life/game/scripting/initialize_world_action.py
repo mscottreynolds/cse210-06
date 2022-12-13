@@ -12,6 +12,7 @@ class InitializeWorldAction(Action):
     """
 
     def __init__(self):
+        """ Create action for initializing world. """
         return
 
     def execute(self, cast, script):

@@ -6,6 +6,7 @@ from game.services.video_service import VideoService
 
 
 def main():   
+    """ Main entry point. Create keyboard and video services. Start game director."""
     # Services
     keyboard_service = KeyboardService()
     video_service = VideoService()

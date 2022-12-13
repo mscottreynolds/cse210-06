@@ -1,6 +1,7 @@
 from game.shared.color import Color
 
-VERSION = 1.0
+# The constants used througout the game.
+VERSION = 1.1
 
 COLUMNS = 80
 ROWS = 60
