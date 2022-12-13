@@ -29,5 +29,5 @@ ENTER = "enter"
 PAUSE = "p"
 
 # Messages
-MSG_PAUSED = "Press Enter to run. arrow keys to move cursor. space to set cell. x to clear cell. c to clear screen. q to quit."
+MSG_PAUSED = "Press Enter to run.  Arrow keys to move cursor.  Space to set cell.  x to clear cell.  c to clear screen.  q to quit."
 MSG_RUNNING = "Press p to pause."

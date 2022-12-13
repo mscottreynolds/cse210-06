@@ -93,11 +93,13 @@ class Director:
         banner.set_text("Life")
         # banner.set_position(Point(col, 0).scale(constants.CELL_SIZE))        
         banner.set_font_size(constants.FONT_SIZE * 2)
+        banner.set_position(Point(1, 1).scale(constants.CELL_SIZE))
 
         # Instructional messages.
         message = Actor()
         message.set_text(constants.MSG_PAUSED)
-        message.set_position(Point(col, constants.ROWS+1).scale(constants.CELL_SIZE))
+        message.set_position(Point(col, constants.ROWS).scale(constants.CELL_SIZE))
+        message.set_font_size(int(constants.FONT_SIZE * 1.3))
 
         cast = Cast()
         cast.add_actor("player", player)
