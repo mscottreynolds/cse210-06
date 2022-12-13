@@ -6,6 +6,7 @@ from game.shared.point import Point
 from game.services.keyboard_service import KeyboardService
 from game.casting.cast import Cast
 from game.casting.actor import Actor
+from game.casting.banner import Banner
 from game.scripting.script import Script
 
 
@@ -25,6 +26,14 @@ class ControlCursorAction(Action):
         """
         self._keyboard_service = keyboard_service
 
+
+    def _update_banner(self, cast: Cast, grid, row, col):
+        """ Update the banner to reflect the row and column the cursor is on. 
+        Only used when game is paused."""
+        banner: Banner = cast.get_first_actor("banner")
+        banner.set_text(f"Cursor Row: {row}  Column: {col}  Cell: {grid[row][col]}")
+
+
     def execute(self, cast: Cast, script: Script):
         """Executes the control actors action.
 
@@ -42,64 +51,82 @@ class ControlCursorAction(Action):
         # Check game state.
         if player.get_state() == constants.STATE_PAUSE:
             # Keys that can be pressed while paused.
+            world: World = cast.get_first_actor("world")
+            grid = world.get_grid()
+
+            # Toggle pause
             if self._keyboard_service.is_key_down("r") or \
-               self._keyboard_service.is_key_down("enter"):
+                self._keyboard_service.is_key_down("enter"):
                 player.set_state(constants.STATE_RUN)
                 message.set_text(constants.MSG_RUNNING)
 
-            
+            # Move cursor up.
             if self._keyboard_service.is_key_down("i") or \
                 self._keyboard_service.is_key_down("up"):
                 if player_row > 1:
                     player_row -= 1
                     player.set_position(Point(player_col, player_row).scale(constants.CELL_SIZE))
                     player.set_row(player_row)
+                    self._update_banner(cast, grid, player_row, player_col)
             
+            # Move cursor down.
             if self._keyboard_service.is_key_down("k") or \
                 self._keyboard_service.is_key_down("down"):
                 if player_row < constants.ROWS:
                     player_row += 1
                     player.set_position(Point(player_col, player_row).scale(constants.CELL_SIZE))
                     player.set_row(player_row)
+                    self._update_banner(cast, grid, player_row, player_col)
             
+            # Move cursor left.
             if self._keyboard_service.is_key_down("j") or \
                 self._keyboard_service.is_key_down("left"):
                 if player_col > 1:
                     player_col -= 1
                     player.set_position(Point(player_col, player_row).scale(constants.CELL_SIZE))
                     player.set_column(player_col)
+                    self._update_banner(cast, grid, player_row, player_col)
 
+            # Move cursor right.
             if self._keyboard_service.is_key_down("l") or \
                 self._keyboard_service.is_key_down("right"):
                 if player_col < constants.COLUMNS:
                     player_col += 1
                     player.set_position(Point(player_col, player_row).scale(constants.CELL_SIZE))
                     player.set_column(player_col)
+                    self._update_banner(cast, grid, player_row, player_col)
 
             # Check for setting and clearing of cells.
-            world: World = cast.get_first_actor("world")
-            grid = world.get_grid()
-            if self._keyboard_service.is_key_down("s") or \
-                self._keyboard_service.is_key_down("space"):
+            if self._keyboard_service.is_key_down("s"):
+                # self._keyboard_service.is_key_down("space"):
                 if grid[player_row][player_col] == 0:
                     world.increment_cell_count()
                     grid[player_row][player_col] = 1
+                    self._update_banner(cast, grid, player_row, player_col)
             
+            # Clear cell.
             if self._keyboard_service.is_key_down("x"):
                 if grid[player_row][player_col] == 1:
                     world.decrement_cell_count()
                     grid[player_row][player_col] = 0
+                    self._update_banner(cast, grid, player_row, player_col)
 
-            if self._keyboard_service.is_key_down("q"):
-                player.set_state(constants.STATE_QUIT)
-
+            # Clear screen/grid.
             if self._keyboard_service.is_key_down("c"):
                 # Clear the grid.
                 if world.get_cell_count() > 0:
                     world.reset_world()
+                    self._update_banner(cast, grid, player_row, player_col)
+
         else:
-            # keys that can be pressed while running
-            if self._keyboard_service.is_key_down("p"):
+            # Keys that can be pressed while running
+
+            # Pause game.
+            if self._keyboard_service.is_key_down("p") or \
+                self._keyboard_service.is_key_down("space"):
                 player.set_state(constants.STATE_PAUSE)
                 message.set_text(constants.MSG_PAUSED)
 
+        # quit.
+        if self._keyboard_service.is_key_down("q"):
+            player.set_state(constants.STATE_QUIT)

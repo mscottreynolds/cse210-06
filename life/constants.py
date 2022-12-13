@@ -1,16 +1,17 @@
 from game.shared.color import Color
 
 # The constants used througout the game.
-VERSION = 1.1
+VERSION = 1.2
 
-COLUMNS = 80
-ROWS = 60
-CELL_SIZE = 15
+COLUMNS = 160
+ROWS = 120
+CELL_SIZE = 8
 MAX_X = (COLUMNS+2) * CELL_SIZE
 MAX_Y = (ROWS+2) * CELL_SIZE
-FRAME_RATE = 15
-FONT_SIZE = 15
+FRAME_RATE = 29
+FONT_SIZE = 16
 CAPTION = "Life"
+CELL_CHAR = "#"
 WHITE = Color(255, 255, 255)
 RED = Color(255, 0, 0)
 YELLOW = Color(255, 255, 0)
@@ -29,5 +30,5 @@ ENTER = "enter"
 PAUSE = "p"
 
 # Messages
-MSG_PAUSED = "Press Enter to run.  Arrow keys to move cursor.  Space to set cell.  x to clear cell.  c to clear screen.  q to quit."
+MSG_PAUSED = "Press j, k, i, l to move cursor.  Press r to run, s to set cell, x to clear cell, c to clear screen, and q to quit."
 MSG_RUNNING = "Press p to pause."

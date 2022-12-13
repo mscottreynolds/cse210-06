@@ -53,7 +53,8 @@ class DrawWorldAction(Action):
             for r in range(1, ROWS+1):
                 if grid[r][c]:
                     actor = Actor()
-                    actor.set_text('*')
+                    actor.set_text(constants.CELL_CHAR)
+                    actor.set_font_size(constants.CELL_SIZE)
                     point = Point(c, r).scale(constants.CELL_SIZE)
                     actor.set_position(point)
                     points.append(actor)
