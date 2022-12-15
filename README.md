@@ -1,6 +1,7 @@
 # cse210-06
 
 Conway's Game of Life.
+Version 1.3
 
 ## Overview
 
@@ -11,8 +12,7 @@ The Game of Life, also known simply as Life, is a cellular automaton devised by 
 
 The Rules for the Game of Life are defined here [https://en.wikipedia.org/wiki/Conway's_Game_of_Life].
 
-This implementation starts off with a blank screen and a cursor. The player can use the
-arrow keys to move the cursor left, down, right, and up respectively. Pressing the space key will set a cell, pressing the 'x' key will clear a cell. Pressing the 'c' key will clear all cells. When the player is ready for the game to start, they can hit the 'Enter' key. Generations will then proceed, calculating new worlds based on the rules of the Game of Life as oulined above. At any time, the player can pause the game by hitting the 'p' key and then use the cursor control keys to make any additional changes to the current world. The player can resume by hitting the 'Enter' key again.
+This implementation starts off with an inital pattern and runs. The player can press the 'p' key to pause the game and make changes. The player can use the arrow keys to move the cursor left, down, right, and up respectively. Pressing the 'j', 'k', 'l', and 'i' keys will move the cursor one cell at a time. Pressing the 's' key will set a cell and pressing the 'x' key will clear a cell. Pressing the 'c' key will clear all cells. When the player is ready for the game to start, they can hit the 'Enter' key. Generations will then proceed, calculating new worlds based on the rules of the Game of Life as oulined above. At any time, the player can pause the game by hitting the 'p' key and then use the cursor control keys to make any additional changes to the current world. The player can resume by hitting the 'Enter' key again. Pressing the 'h' key will display help text.
 
 ## Getting Started
 
