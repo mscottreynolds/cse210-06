@@ -101,12 +101,14 @@ class ControlCursorAction(Action):
                     self._update_banner(cast, grid, player_row, player_col)
 
             # Check for setting and clearing of cells.
+            # Generation count is set back to zero every time a change is made.
             if self._keyboard_service.is_key_down("s"):
                 # self._keyboard_service.is_key_down("space"):
                 if grid[player_row][player_col] == 0:
                     world.increment_cell_count()
                     grid[player_row][player_col] = 1
                     self._update_banner(cast, grid, player_row, player_col)
+                    world.set_generation(0)
             
             # Clear cell.
             if self._keyboard_service.is_key_down("x"):
@@ -114,16 +116,19 @@ class ControlCursorAction(Action):
                     world.decrement_cell_count()
                     grid[player_row][player_col] = 0
                     self._update_banner(cast, grid, player_row, player_col)
+                    world.set_generation(0)
 
             # Randomize screen.
             if self._keyboard_service.is_key_pressed("1"):
                 # Place a bunch of random cells on grid. Use constants.COLUMNS as a count.
                 world.randomize_grid(int(constants.COLUMNS))
+                world.set_generation(0)
 
             # Insert glider.
             if self._keyboard_service.is_key_pressed("2"):
                 # Insert a glider at cursor position.
                 world.insert_glider(player_row, player_col)
+                world.set_generation(0)
 
             # Clear screen/grid.
             if self._keyboard_service.is_key_pressed("c"):
@@ -132,6 +137,7 @@ class ControlCursorAction(Action):
                 if world.get_cell_count() > 0:
                     world.reset_world()
                     self._update_banner(cast, grid, player_row, player_col)
+                    world.set_generation(0)
 
             # Display help.
             if self._keyboard_service.is_key_pressed("h"):

@@ -48,6 +48,11 @@ class World(Actor):
         """ Increment the current generation by one. """
         self._generation += 1
 
+    
+    def set_generation(self, generation: int):
+        """ Set the generation count."""
+        self._generation = generation
+
 
     def get_grid(self):
         """ Get the main world grid."""
@@ -170,7 +175,7 @@ class World(Actor):
         offset_row = row
         offset_col = column
         old_cell_count = \
-              grid[offset_row]    [offset_col] \
+              grid[offset_row]    [offset_col]   \
             + grid[offset_row]    [offset_col+1] \
             + grid[offset_row]    [offset_col+2] \
             + grid[offset_row + 1][offset_col]   \
