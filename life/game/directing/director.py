@@ -80,8 +80,8 @@ class Director:
         """Create the cast that will be used in the game."""
         # Player: Set cursor postiion to middle of the screen.
         player = Player()
-        row = int(int(constants.ROWS / 2))
-        col = int(int(constants.COLUMNS / 2))
+        row = int(int(constants.ROWS / 2 + 1))
+        col = int(int(constants.COLUMNS / 2 + 1))
         player.set_position(Point(col, row).scale(constants.CELL_SIZE))
         player.set_row(row)
         player.set_column(col)
@@ -100,7 +100,7 @@ class Director:
         # Instructional messages.
         message = Message()
         message.set_text(constants.MSG_PAUSED)
-        message.set_position(Point(col, constants.ROWS-1).scale(constants.CELL_SIZE) )
+        message.set_position(Point(col * constants.CELL_SIZE, (constants.ROWS) * constants.CELL_SIZE - constants.FONT_SIZE))
         message.set_font_size(int(constants.FONT_SIZE * 1.3))
         message.set_timer(constants.FRAME_RATE * 10)       # Displayes for about a minute.
 
@@ -133,7 +133,7 @@ class Director:
         script.add_action("initialize", iwa)
         script.add_action("initialize", dwa)
         script.add_action("input", cca)
-        script.add_action("update", mca)
+        # script.add_action("update", mca)
         script.add_action("update", gnwa)
         script.add_action("output", dwa)
 

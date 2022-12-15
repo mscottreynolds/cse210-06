@@ -28,11 +28,11 @@ class ControlCursorAction(Action):
         self._keyboard_service = keyboard_service
 
 
-    def _update_banner(self, cast: Cast, grid, row, col):
+    def _update_banner(self, cast: Cast, row, col, value):
         """ Update the banner to reflect the row and column the cursor is on. 
         Only used when game is paused."""
         banner: Banner = cast.get_first_actor("banner")
-        banner.set_text(f"Cursor Row: {row}  Column: {col}  Cell: {grid[row][col]}")
+        banner.set_text(f"Cursor Row: {row}  Column: {col}  Cell: {value}")
 
 
     def execute(self, cast: Cast, script: Script):
@@ -53,7 +53,6 @@ class ControlCursorAction(Action):
         if player.get_state() == constants.STATE_PAUSE:
             # Keys that can be pressed while paused.
             world: World = cast.get_first_actor("world")
-            grid = world.get_grid()
 
             # Toggle pause
             if self._keyboard_service.is_key_pressed("p") or \
@@ -71,7 +70,7 @@ class ControlCursorAction(Action):
                     player_row -= 1
                     player.set_position(Point(player_col, player_row).scale(constants.CELL_SIZE))
                     player.set_row(player_row)
-                    self._update_banner(cast, grid, player_row, player_col)
+                    self._update_banner(cast, player_row, player_col, world.get_cell(player_row, player_col))
             
             # Move cursor down.
             if self._keyboard_service.is_key_pressed("k") or \
@@ -80,7 +79,7 @@ class ControlCursorAction(Action):
                     player_row += 1
                     player.set_position(Point(player_col, player_row).scale(constants.CELL_SIZE))
                     player.set_row(player_row)
-                    self._update_banner(cast, grid, player_row, player_col)
+                    self._update_banner(cast, player_row, player_col, world.get_cell(player_row, player_col))
             
             # Move cursor left.
             if self._keyboard_service.is_key_pressed("j") or \
@@ -89,7 +88,7 @@ class ControlCursorAction(Action):
                     player_col -= 1
                     player.set_position(Point(player_col, player_row).scale(constants.CELL_SIZE))
                     player.set_column(player_col)
-                    self._update_banner(cast, grid, player_row, player_col)
+                    self._update_banner(cast, player_row, player_col, world.get_cell(player_row, player_col))
 
             # Move cursor right.
             if self._keyboard_service.is_key_pressed("l") or \
@@ -98,46 +97,67 @@ class ControlCursorAction(Action):
                     player_col += 1
                     player.set_position(Point(player_col, player_row).scale(constants.CELL_SIZE))
                     player.set_column(player_col)
-                    self._update_banner(cast, grid, player_row, player_col)
+                    self._update_banner(cast, player_row, player_col, world.get_cell(player_row, player_col))
 
             # Check for setting and clearing of cells.
             # Generation count is set back to zero every time a change is made.
             if self._keyboard_service.is_key_down("s"):
-                # self._keyboard_service.is_key_down("space"):
-                if grid[player_row][player_col] == 0:
-                    world.increment_cell_count()
-                    grid[player_row][player_col] = 1
-                    self._update_banner(cast, grid, player_row, player_col)
-                    world.set_generation(0)
+                world.set_cell(player_row, player_col, 1)
+                # if grid[player_row][player_col] == 0:
+                    # world.increment_cell_count()
+                    # grid[player_row][player_col] = 1
+                self._update_banner(cast, player_row, player_col, world.get_cell(player_row, player_col))
+                world.set_generation(0)
             
             # Clear cell.
             if self._keyboard_service.is_key_down("x"):
-                if grid[player_row][player_col] == 1:
-                    world.decrement_cell_count()
-                    grid[player_row][player_col] = 0
-                    self._update_banner(cast, grid, player_row, player_col)
-                    world.set_generation(0)
+                # if grid[player_row][player_col] == 1:
+                    # world.decrement_cell_count()
+                    # grid[player_row][player_col] = 0
+                world.set_cell(player_row, player_col, 0)
+                self._update_banner(cast, player_row, player_col, world.get_cell(player_row, player_col))
+                world.set_generation(0)
+
+            # Insert gliders.
+            if self._keyboard_service.is_key_pressed("1"):
+                # Insert a glider at cursor position.
+                world.insert_down_right_glider(player_row, player_col)
+                world.set_generation(0)
+
+            if self._keyboard_service.is_key_pressed("2"):
+                # Insert a glider at cursor position.
+                world.insert_up_right_glider(player_row, player_col)
+                world.set_generation(0)
+
+            if self._keyboard_service.is_key_pressed("3"):
+                # Insert a glider at cursor position.
+                world.insert_down_left_glider(player_row, player_col)
+                world.set_generation(0)
+
+            if self._keyboard_service.is_key_pressed("4"):
+                # Insert a glider at cursor position.
+                world.insert_up_left_glider(player_row, player_col)
+                world.set_generation(0)
 
             # Randomize screen.
-            if self._keyboard_service.is_key_pressed("1"):
+            if self._keyboard_service.is_key_pressed("5"):
                 # Place a bunch of random cells on grid. Use constants.COLUMNS as a count.
                 world.randomize_grid(int(constants.COLUMNS))
                 world.set_generation(0)
 
-            # Insert glider.
-            if self._keyboard_service.is_key_pressed("2"):
-                # Insert a glider at cursor position.
-                world.insert_glider(player_row, player_col)
+            # Insert pattern '6'
+            if self._keyboard_service.is_key_pressed("6"):
+                world.insert_pattern_6(player_row, player_col)
                 world.set_generation(0)
 
             # Clear screen/grid.
             if self._keyboard_service.is_key_pressed("c"):
                 # Clear the grid.
-                player.set_help(False)
-                if world.get_cell_count() > 0:
-                    world.reset_world()
-                    self._update_banner(cast, grid, player_row, player_col)
-                    world.set_generation(0)
+                # player.set_help(False)
+                # if world.get_cell_count() > 0:
+                world.reset_world()
+                self._update_banner(cast, player_row, player_col, world.get_cell(player_row, player_col))
+                world.set_generation(0)
 
             # Display help.
             if self._keyboard_service.is_key_pressed("h"):
@@ -154,7 +174,7 @@ class ControlCursorAction(Action):
                 self._keyboard_service.is_key_pressed("space"):
                 player.set_state(constants.STATE_PAUSE)
                 message.set_text(constants.MSG_PAUSED)
-                message.reset_timer()
+                message.disable_timer()
 
         # quit.
         if self._keyboard_service.is_key_pressed("q"):

@@ -1,14 +1,14 @@
 from game.shared.color import Color
 
 # The constants used througout the game.
-VERSION = "1.2.1"
+VERSION = "1.3"
 
-COLUMNS = 120
-ROWS = 120
+COLUMNS = 127
+ROWS = 127
 CELL_SIZE = 8
 MAX_X = (COLUMNS+2) * CELL_SIZE
 MAX_Y = (ROWS+2) * CELL_SIZE
-FRAME_RATE = 17
+FRAME_RATE = 29
 FONT_SIZE = 16
 CAPTION = "Life"
 CELL_CHAR = "*"
@@ -50,6 +50,10 @@ x = Clear cell.
 p = Unpause and run game. (Enter and Space also work)
 q = Quit.
 
-1 = Randomize grid.
-2 = Insert Glider at cursor.
+1 = Insert down right glider at cursor.
+2 = Insert up right glider at cursor.
+3 = Insert down left glider at cursor.
+4 = Insert up left glider at cursor.
+5 = Randomize grid.
+6 = Insert pattern "6"
 """

@@ -45,26 +45,27 @@ class DrawWorldAction(Action):
         world: World = cast.get_first_actor("world")
         COLS = world.get_columns()
         ROWS = world.get_rows()
-        grid = world.get_grid()
+        # grid = world.get_grid()
 
         # Build an array of points, or actors, that represent the cells on the screen.
-        points = []
+        # points = []
         for c in range(1, COLS+1):
             for r in range(1, ROWS+1):
-                if grid[r][c]:
+                if world.get_cell(r, c):
                     actor = Actor()
                     actor.set_text(constants.CELL_CHAR)
                     actor.set_font_size(constants.CELL_SIZE)
                     point = Point(c, r).scale(constants.CELL_SIZE)
                     actor.set_position(point)
-                    points.append(actor)
+                    self._video_service.draw_actor(actor)
+                    # points.append(actor)
 
-        self._video_service.draw_actors(points)
+        # self._video_service.draw_actors(points)
 
         banner: Banner = cast.get_first_actor("banner")
         self._video_service.draw_actor(banner, False)
 
-        
+
         message: Actor = cast.get_first_actor("message")
         self._video_service.draw_actor(message, True)
 

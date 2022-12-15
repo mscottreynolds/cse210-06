@@ -43,12 +43,12 @@ class KeyboardService:
         self._keys['3'] = pyray.KEY_THREE
         self._keys['4'] = pyray.KEY_FOUR
         self._keys['5'] = pyray.KEY_FIVE
-        self._keys['6'] = pyray.KEY_FIVE
+        self._keys['6'] = pyray.KEY_SIX
         self._keys['7'] = pyray.KEY_SEVEN
         self._keys['8'] = pyray.KEY_EIGHT
         self._keys['9'] = pyray.KEY_NINE
         self._keys['0'] = pyray.KEY_ZERO
-        
+
 
     def is_key_up(self, key):
         """Checks if the given key is currently up.
