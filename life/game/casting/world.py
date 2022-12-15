@@ -181,6 +181,10 @@ class World(Actor):
         # **
         # * *
         # *
+        if row + 2 > self._rows:
+            row -= 2
+        if column + 2 > self._columns:
+            column -= 2
         self._grid[row]    [column] = 1
         self._grid[row]    [column+1] = 1
         self._grid[row]    [column+2] = 0
@@ -197,6 +201,10 @@ class World(Actor):
         #  **
         # * *
         #   *
+        if row + 2 > self._rows:
+            row -= 2
+        if column + 2 > self._columns:
+            column -= 2
         self._grid[row]    [column] = 0
         self._grid[row]    [column+1] = 1
         self._grid[row]    [column+2] = 1
@@ -212,6 +220,10 @@ class World(Actor):
         # *
         # * *
         # **
+        if row + 2 > self._rows:
+            row -= 2
+        if column + 2 > self._columns:
+            column -= 2
         self._grid[row]    [column] = 1
         self._grid[row]    [column+1] = 0
         self._grid[row]    [column+2] = 0
@@ -227,6 +239,10 @@ class World(Actor):
         #   *
         # * *
         #  **
+        if row + 2 > self._rows:
+            row -= 2
+        if column + 2 > self._columns:
+            column -= 2
         self._grid[row]    [column] = 0
         self._grid[row]    [column+1] = 0
         self._grid[row]    [column+2] = 1
@@ -245,6 +261,10 @@ class World(Actor):
         #    **
         #  ** *
         # * * *
+        if row + 4 > self._rows:
+            row -= 4
+        if column + 4 > self._columns:
+            column -= 4
         self._grid[row]    [column]   = 1
         self._grid[row]    [column+1] = 1
         self._grid[row]    [column+2] = 1

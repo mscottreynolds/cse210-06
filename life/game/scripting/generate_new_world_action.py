@@ -27,8 +27,8 @@ class GenerateNewWorldAction(Action):
         player: Player = cast.get_first_actor("player")
         if player.get_state() == constants.STATE_RUN:
             world: World = cast.get_first_actor("world")
-            world.generate_new_world()
             world.wrap_endless_world()
+            world.generate_new_world()
 
             # Now update the banner.
             banner: Banner = cast.get_first_actor("banner")
