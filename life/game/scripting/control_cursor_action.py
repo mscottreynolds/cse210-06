@@ -7,6 +7,7 @@ from game.services.keyboard_service import KeyboardService
 from game.casting.cast import Cast
 from game.casting.actor import Actor
 from game.casting.banner import Banner
+from game.casting.message import Message
 from game.scripting.script import Script
 
 
@@ -46,7 +47,7 @@ class ControlCursorAction(Action):
         player_row = player.get_row()
         player_col = player.get_column()
 
-        message: Actor = cast.get_first_actor("message")
+        message: Message = cast.get_first_actor("message")
 
         # Check game state.
         if player.get_state() == constants.STATE_PAUSE:
@@ -55,13 +56,16 @@ class ControlCursorAction(Action):
             grid = world.get_grid()
 
             # Toggle pause
-            if self._keyboard_service.is_key_down("r") or \
-                self._keyboard_service.is_key_down("enter"):
+            if self._keyboard_service.is_key_pressed("p") or \
+                self._keyboard_service.is_key_pressed("space") or \
+                self._keyboard_service.is_key_pressed("enter"):
                 player.set_state(constants.STATE_RUN)
                 message.set_text(constants.MSG_RUNNING)
+                message.reset_timer()
+                player.set_help(False)
 
             # Move cursor up.
-            if self._keyboard_service.is_key_down("i") or \
+            if self._keyboard_service.is_key_pressed("i") or \
                 self._keyboard_service.is_key_down("up"):
                 if player_row > 1:
                     player_row -= 1
@@ -70,7 +74,7 @@ class ControlCursorAction(Action):
                     self._update_banner(cast, grid, player_row, player_col)
             
             # Move cursor down.
-            if self._keyboard_service.is_key_down("k") or \
+            if self._keyboard_service.is_key_pressed("k") or \
                 self._keyboard_service.is_key_down("down"):
                 if player_row < constants.ROWS:
                     player_row += 1
@@ -79,7 +83,7 @@ class ControlCursorAction(Action):
                     self._update_banner(cast, grid, player_row, player_col)
             
             # Move cursor left.
-            if self._keyboard_service.is_key_down("j") or \
+            if self._keyboard_service.is_key_pressed("j") or \
                 self._keyboard_service.is_key_down("left"):
                 if player_col > 1:
                     player_col -= 1
@@ -88,7 +92,7 @@ class ControlCursorAction(Action):
                     self._update_banner(cast, grid, player_row, player_col)
 
             # Move cursor right.
-            if self._keyboard_service.is_key_down("l") or \
+            if self._keyboard_service.is_key_pressed("l") or \
                 self._keyboard_service.is_key_down("right"):
                 if player_col < constants.COLUMNS:
                     player_col += 1
@@ -111,22 +115,42 @@ class ControlCursorAction(Action):
                     grid[player_row][player_col] = 0
                     self._update_banner(cast, grid, player_row, player_col)
 
+            # Randomize screen.
+            if self._keyboard_service.is_key_pressed("1"):
+                # Place a bunch of random cells on grid. Use constants.COLUMNS as a count.
+                world.randomize_grid(int(constants.COLUMNS))
+
+            # Insert glider.
+            if self._keyboard_service.is_key_pressed("2"):
+                # Insert a glider at cursor position.
+                world.insert_glider(player_row, player_col)
+
             # Clear screen/grid.
-            if self._keyboard_service.is_key_down("c"):
+            if self._keyboard_service.is_key_pressed("c"):
                 # Clear the grid.
+                player.set_help(False)
                 if world.get_cell_count() > 0:
                     world.reset_world()
                     self._update_banner(cast, grid, player_row, player_col)
+
+            # Display help.
+            if self._keyboard_service.is_key_pressed("h"):
+                if player.get_help():
+                    player.set_help(False)
+                else:
+                    player.set_help(True)
 
         else:
             # Keys that can be pressed while running
 
             # Pause game.
-            if self._keyboard_service.is_key_down("p") or \
-                self._keyboard_service.is_key_down("space"):
+            if self._keyboard_service.is_key_pressed("p") or \
+                self._keyboard_service.is_key_pressed("space"):
                 player.set_state(constants.STATE_PAUSE)
                 message.set_text(constants.MSG_PAUSED)
+                message.reset_timer()
 
         # quit.
-        if self._keyboard_service.is_key_down("q"):
+        if self._keyboard_service.is_key_pressed("q"):
             player.set_state(constants.STATE_QUIT)
+

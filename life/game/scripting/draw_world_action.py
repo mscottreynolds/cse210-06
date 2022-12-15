@@ -64,8 +64,13 @@ class DrawWorldAction(Action):
         banner: Banner = cast.get_first_actor("banner")
         self._video_service.draw_actor(banner, False)
 
+        
         message: Actor = cast.get_first_actor("message")
         self._video_service.draw_actor(message, True)
+
+        if player.get_help():
+            msg_help: Actor = cast.get_first_actor("help-display")
+            self._video_service.draw_actor(msg_help)
 
         # Flush buffer to screen.
         self._video_service.flush_buffer()

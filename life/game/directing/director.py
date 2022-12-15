@@ -4,6 +4,7 @@ from game.services.video_service import VideoService
 from game.casting.cast import Cast
 from game.casting.actor import Actor
 from game.casting.banner import Banner
+from game.casting.message import Message
 from game.casting.world import World
 from game.casting.player import Player
 from game.scripting.script import Script
@@ -91,21 +92,31 @@ class Director:
 
         banner = Banner()
         banner.set_text("Life")
+        banner.set_color(constants.BLUE)
         # banner.set_position(Point(col, 0).scale(constants.CELL_SIZE))        
         banner.set_font_size(constants.FONT_SIZE * 2)
-        banner.set_position(Point(1, 1).scale(constants.CELL_SIZE))
+        banner.set_position(Point(1, 1).scale(constants.CELL_SIZE))     # Place banner on row 1 col 1.
 
         # Instructional messages.
-        message = Actor()
+        message = Message()
         message.set_text(constants.MSG_PAUSED)
         message.set_position(Point(col, constants.ROWS-1).scale(constants.CELL_SIZE) )
         message.set_font_size(int(constants.FONT_SIZE * 1.3))
+        message.set_timer(constants.FRAME_RATE * 10)       # Displayes for about a minute.
+
+        # Help display
+        message_help = Message()
+        message_help.set_color(constants.YELLOW)
+        message_help.set_text(constants.MSG_HELP)
+        message_help.set_position(Point(1, 3).scale(constants.CELL_SIZE))   # Plase help on row 3 column 1.
+        message_help.set_font_size(int(constants.FONT_SIZE*1.3))
 
         cast = Cast()
         cast.add_actor("player", player)
         cast.add_actor("world", world)
         cast.add_actor("banner", banner)
         cast.add_actor("message", message)
+        cast.add_actor("help-display", message_help)
 
         return cast
 

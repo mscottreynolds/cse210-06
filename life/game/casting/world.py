@@ -1,5 +1,8 @@
+import random
+import constants
 from game.casting.actor import Actor
 from game.shared.point import Point
+
 
 
 class World(Actor):
@@ -86,4 +89,110 @@ class World(Actor):
         self._next_grid = [ [0] * (self._columns+2) for i in range(self._rows+2) ]
         self._generation = 0
         self._cell_count = 0
+
+
+    def generate_new_world(self):
+        """ Generate a new grid from the existing grid. Then update existing grid.
+        """
+        grid = self._grid
+        next_grid = self._next_grid
+        ROWS = self._rows
+        COLS = self._columns
+
+        # Compute next state.
+        for c in range(1, COLS+1):
+            for r in range(1, ROWS+1):                
+                # Count neighbors
+                n =  grid[r-1][c-1] + grid[r-1][c] + grid[r-1][c+1] 
+                n += grid[r][c-1]                  + grid[r][c+1]  
+                n += grid[r+1][c-1] + grid[r+1][c] + grid[r+1][c+1]
+
+                # Rules
+                cell = grid[r][c]
+                if cell == 0 and n == 3:        # Birth
+                    self.increment_cell_count()
+                    cell = 1
+                elif cell == 1 and n < 2:       # Lonely
+                    self.decrement_cell_count()
+                    cell = 0
+                elif cell == 1 and n > 3:       # Crowded
+                    self.decrement_cell_count()
+                    cell = 0
+                next_grid[r][c] = cell
+
+        # Update main grid.
+        for c in range(1, COLS+1):
+            for r in range(1, ROWS+1):
+                grid[r][c] = next_grid[r][c]
+
+        # Update generations
+        self.increment_generation()
+
+
+    def wrap_endless_world(self):
+        """
+        Wrap the borders on the grid for an 'endless' world.
+        """
+        grid = self._grid
+        rows = self._rows
+        cols = self._columns
+
+        # Wrap endless world by using borders to mirror the opposite side.
+        for c in range(1, cols+1):
+            grid[0][c] = grid[rows][c]
+            grid[rows+1][c] = grid[1][c]
+        
+        for r in range(1, rows+1):
+            grid[r][0] = grid[r][cols]
+            grid[r][cols+1] = grid[r][1]
+        
+        grid[0][0]             = grid[rows][cols]
+        grid[rows+1][cols+1] = grid[1][1]
+        grid[rows+1][0]       = grid[1][cols]
+        grid[0][cols+1]       = grid[rows][1]
+
+
+
+    def randomize_grid(self, count=500):
+        """Place a bunch of random cells on the grid.
+        count = Number of random cells to place."""
+        for i in range(count):
+            row = random.randint(1, constants.ROWS)
+            col = random.randint(1, constants.COLUMNS)
+            self._grid[row][col] = 1
+            self.increment_cell_count()
+
+
+    def insert_glider(self, row, column):
+        """ Insert a glider at the specified row and column."""    
+        # First count the existing cell count a position.
+        grid = self._grid
+        offset_row = row
+        offset_col = column
+        old_cell_count = \
+              grid[offset_row]    [offset_col] \
+            + grid[offset_row]    [offset_col+1] \
+            + grid[offset_row]    [offset_col+2] \
+            + grid[offset_row + 1][offset_col]   \
+            + grid[offset_row + 1][offset_col+1] \
+            + grid[offset_row + 1][offset_col+2] \
+            + grid[offset_row + 2][offset_col]   \
+            + grid[offset_row + 2][offset_col+1] \
+            + grid[offset_row + 2][offset_col+2]
+
+        grid[offset_row]    [offset_col] = 1
+        grid[offset_row]    [offset_col+1] = 0
+        grid[offset_row]    [offset_col+2] = 0
+        grid[offset_row + 1][offset_col] = 0
+        grid[offset_row + 1][offset_col+1] = 1
+        grid[offset_row + 1][offset_col+2] = 1
+        grid[offset_row + 2][offset_col] = 1
+        grid[offset_row + 2][offset_col+1] = 1
+        grid[offset_row + 2][offset_col+2] = 0
+
+        self._cell_count += 5 - old_cell_count
+
+
+
+
 
