@@ -123,18 +123,26 @@ class World(Actor):
                 cell = self._grid[r][c]
                 if cell == 0 and n == 3:        # Birth
                     self._cell_count += 1
-                    cell = 1
-                elif cell == 1 and n < 2:       # Lonely
+                    self._next_grid[r][c] = 1
+                elif cell > 0 and n < 2:        # Lonely
                     self._cell_count -= 1
-                    cell = 0
-                elif cell == 1 and n > 3:       # Crowded
+                    self._next_grid[r][c] = 0
+                elif cell > 0 and n > 3:        # Crowded
                     self._cell_count -= 1
-                    cell = 0
-                self._next_grid[r][c] = cell
+                    self._next_grid[r][c] = 0
+                elif cell > 0:                  # Stable
+                    self._next_grid[r][c] = cell + 1
+                else:
+                    self._next_grid[r][c] = 0
 
-        for r in range(1, self._rows+1):
-            for c in range(1, self._columns+1):
-                self._grid[r][c] = self._next_grid[r][c]
+        # Swap the grids.
+        temp_grid = self._grid
+        self._grid = self._next_grid
+        self._next_grid = temp_grid
+
+        # for r in range(1, self._rows+1):
+        #     for c in range(1, self._columns+1):
+        #         self._grid[r][c] = self._next_grid[r][c]
 
         # Update generations
         self._generation += 1

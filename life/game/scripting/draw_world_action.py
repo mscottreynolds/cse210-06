@@ -1,3 +1,4 @@
+
 import constants
 from game.scripting.action import Action
 from game.casting.banner import Banner
@@ -7,6 +8,19 @@ from game.casting.player import Player
 from game.casting.world import World
 from game.scripting.script import Script
 from game.shared.point import Point
+from game.shared.color import Color
+import colorsys
+
+def get_N_RGB(N=5):
+    HSV_tuples = [(x * 1.0 / N, 0.5, 0.5) for x in range(N)]
+    rgb_out = []
+    for rgb in HSV_tuples:
+        rgb = map(lambda x: int(x * 255), colorsys.hsv_to_rgb(*rgb))
+        # print(rgb)
+        rgb_out.append(tuple(rgb))
+    return rgb_out
+
+MAX_COLOR_PALETTE = 255
 
 class DrawWorldAction(Action):
     """
@@ -23,6 +37,25 @@ class DrawWorldAction(Action):
             video_service (VideoService): An instance of VideoService.
         """
         self._video_service = video_service
+
+        # Create a color palette that will be used when drawing the cells.
+        self._color_palette = []
+        self._color_palette.append(constants.WHITE)
+        self._color_palette.append(constants.WHITE)
+        self._color_palette.append(constants.WHITE)
+        self._color_palette.append(constants.WHITE)
+        self._color_palette.append(constants.RED)
+        self._color_palette.append(constants.YELLOW)
+        self._color_palette.append(constants.GREEN)
+        self._color_palette.append(constants.BLUE)
+
+        # Fill up the rest of the palettte.
+        N = MAX_COLOR_PALETTE - len(self._color_palette)
+        HSV_tuples = [(x * 1.0 / N, 0.5, 0.5) for x in range(N)]
+        for rgb in HSV_tuples:
+            rgb = map(lambda x: int(x * 255), colorsys.hsv_to_rgb(*rgb))
+            self._color_palette.append(Color(*rgb))
+
 
     def execute(self, cast: Cast, script: Script):
         """Executes the draw actors action.
@@ -51,12 +84,19 @@ class DrawWorldAction(Action):
         # points = []
         for c in range(1, COLS+1):
             for r in range(1, ROWS+1):
-                if world.get_cell(r, c):
+                cell = world.get_cell(r, c)
+                if cell:
                     actor = Actor()
                     actor.set_text(constants.CELL_CHAR)
                     actor.set_font_size(constants.CELL_SIZE)
                     point = Point(c, r).scale(constants.CELL_SIZE)
                     actor.set_position(point)
+
+                    # Setup the color
+                    # if cell > MAX_COLOR_PALETTE:
+                    #     cell = MAX_COLOR_PALETTE
+                    actor.set_color(self._color_palette[(cell-1) % MAX_COLOR_PALETTE])
+
                     self._video_service.draw_actor(actor)
                     # points.append(actor)
 

@@ -48,11 +48,11 @@ class ControlCursorAction(Action):
         player_col = player.get_column()
 
         message: Message = cast.get_first_actor("message")
+        world: World = cast.get_first_actor("world")
 
         # Check game state.
         if player.get_state() == constants.STATE_PAUSE:
             # Keys that can be pressed while paused.
-            world: World = cast.get_first_actor("world")
 
             # Toggle pause
             if self._keyboard_service.is_key_pressed("p") or \
@@ -139,12 +139,6 @@ class ControlCursorAction(Action):
                 world.insert_up_left_glider(player_row, player_col)
                 world.set_generation(0)
 
-            # Randomize screen.
-            if self._keyboard_service.is_key_pressed("5"):
-                # Place a bunch of random cells on grid. Use constants.COLUMNS as a count.
-                world.randomize_grid(int(constants.COLUMNS))
-                world.set_generation(0)
-
             # Insert pattern '6'
             if self._keyboard_service.is_key_pressed("6"):
                 world.insert_pattern_6(player_row, player_col)
@@ -175,6 +169,12 @@ class ControlCursorAction(Action):
                 player.set_state(constants.STATE_PAUSE)
                 message.set_text(constants.MSG_PAUSED)
                 message.disable_timer()
+
+        # Randomize screen.
+        if self._keyboard_service.is_key_down("5"):
+            # Place a bunch of random cells on grid. Use constants.COLUMNS as a count.
+            world.randomize_grid(int(constants.COLUMNS))
+            world.set_generation(0)
 
         # quit.
         if self._keyboard_service.is_key_pressed("q"):

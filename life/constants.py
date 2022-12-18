@@ -1,10 +1,10 @@
 from game.shared.color import Color
 
 # The constants used througout the game.
-VERSION = "1.3"
+VERSION = "1.4"
 
 COLUMNS = 100
-ROWS = 100
+ROWS =  100
 CELL_SIZE = 8
 MAX_X = (COLUMNS+2) * CELL_SIZE
 MAX_Y = (ROWS+2) * CELL_SIZE
